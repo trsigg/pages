@@ -9,10 +9,25 @@
       (function () {
         var sites = [
           { weight: 1, url: "https://www.sporcle.com/games/random.php" },
+          { weight: 1, url: "https://www.theatlantic.com/games/bracket-city/" },
+          // youtube
           { weight: 1, children: [
-            {weight: 1, url: "https://www.youtube.com/watch?v=-NuX79Ud8zI" },
-            {weight: 1, url: "https://www.youtube.com/watch?v=j_Dyg2Dw5xI" },
-            {weight: 1, url: "https://www.youtube.com/watch?v=4jXEuIHY9ic" },
+            // big iron
+            { weight: 1, children: [
+              {weight: 1, url: "https://www.youtube.com/watch?v=-NuX79Ud8zI" }, // base
+              {weight: 1, url: "https://www.youtube.com/watch?v=j_Dyg2Dw5xI" }, // alphabet
+              {weight: 1, url: "https://www.youtube.com/watch?v=3156gSmTFo0" }, // reconstructed
+            ] },
+            // steamed hams
+            { weight: 1, children: [
+              {weight: 1, url: "https://www.youtube.com/watch?v=4jXEuIHY9ic" }, // base
+            ] },
+          ] },
+          // nyt
+          { weight: 1, children: [
+            {weight: 1, url: "https://www.nytimes.com/crosswords/game/daily" },
+            {weight: 1, url: "https://www.nytimes.com/crosswords/game/daily/2001/09/11" },
+            {weight: 1, url: "https://www.nytimes.com/puzzles/spelling-bee" },
           ] },
         ];
         function pickWeighted(nodes) {
