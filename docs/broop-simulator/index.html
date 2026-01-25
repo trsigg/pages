@@ -7,8 +7,33 @@
     <meta http-equiv="refresh" content="0; url=https://www.google.com" />
     <script>
       (function () {
-        var sites = ["https://www.google.com", "https://www.bing.com"];
-        var target = sites[Math.floor(Math.random() * sites.length)];
+        var sites = [
+          { weight: 1, url: "https://www.sporcle.com/games/random.php" },
+          { weight: 1, children: [
+            {weight: 1, url: "https://www.youtube.com/watch?v=-NuX79Ud8zI" },
+            {weight: 1, url: "https://www.youtube.com/watch?v=j_Dyg2Dw5xI" },
+            {weight: 1, url: "https://www.youtube.com/watch?v=4jXEuIHY9ic" },
+          ] },
+        ];
+        function pickWeighted(nodes) {
+          var totalWeight = nodes.reduce(function (sum, node) {
+            return sum + node.weight;
+          }, 0);
+          var roll = Math.random() * totalWeight;
+          var chosen = nodes[0];
+          for (var i = 0; i < nodes.length; i++) {
+            roll -= nodes[i].weight;
+            if (roll <= 0) {
+              chosen = nodes[i];
+              break;
+            }
+          }
+          if (chosen.children) {
+            return pickWeighted(chosen.children);
+          }
+          return chosen.url;
+        }
+        var target = pickWeighted(sites);
         window.location.replace(target);
       })();
     </script>
