@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Random Redirect</title>
+    <meta http-equiv="refresh" content="0; url=https://www.google.com" />
+    <script>
+      (function () {
+        var sites = ["https://www.google.com", "https://www.bing.com"];
+        var target = sites[Math.floor(Math.random() * sites.length)];
+        window.location.replace(target);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
