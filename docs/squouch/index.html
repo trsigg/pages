@@ -21,8 +21,16 @@
         font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
           sans-serif;
       }
+      .square {
+        display: inline-block;
+        filter: hue-rotate(var(--square-hue, 0deg));
+      }
     </style>
     <script>
+      (function () {
+        var hue = Math.floor(Math.random() * 360);
+        document.documentElement.style.setProperty("--square-hue", hue + "deg");
+      })();
       setTimeout(function () {
         window.location.replace(
           "https://trsigg.github.io/pages/broop-simulator"
@@ -31,6 +39,6 @@
     </script>
   </head>
   <body>
-    🟧🛋️
+    <span class="square">🟧</span><span>🛋️</span>
   </body>
 </html>
