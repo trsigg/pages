@@ -9,7 +9,7 @@
       (function () {
         var sites = [
           // youtube
-          { weight: 1, children: [
+          { weight: 5, children: [
             // big iron
             { weight: 1, children: [
               {weight: 1, url: "https://www.youtube.com/watch?v=-NuX79Ud8zI" }, // base
@@ -56,11 +56,6 @@
               {weight: 1, url: "https://www.youtube.com/watch?v=reLjhAAPsPc" }, // all star
               {weight: 1, url: "https://www.youtube.com/watch?v=c1DDBtYqA4U" }, // full
             ] },
-            // ai slop
-            { weight: 1, children: [
-              {weight: 1, url: "" }, // 
-              {weight: 1, url: "" }, // 
-            ] },
             // other
             { weight: 1, children: [
               {weight: 1, url: "https://www.youtube.com/watch?v=UulEsFPhIjY" }, // curious george
@@ -76,24 +71,26 @@
           ] },
           // games
           { weight: 1, children: [
-            { weight: 3, url: "https://www.sporcle.com/games/random.php" },
-            { weight: 3, url: "https://timeguessr.com/" },
-            { weight: 1, url: "https://www.theatlantic.com/games/bracket-city/" },
-            { weight: 1, url: "https://dles.aukspot.com/" },
+            { weight: 2, url: "https://www.sporcle.com/games/random.php" },
+            { weight: 1, url: "https://timeguessr.com/" },
+            { weight: 0.5, url: "https://www.theatlantic.com/games/bracket-city/" },
+            { weight: 0.5, url: "https://dles.aukspot.com/" },
             // nyt
-            { weight: 3, children: [
-              {weight: 5, url: "https://www.nytimes.com/crosswords/game/daily" },
+            { weight: 2, children: [
+              {weight: 3, url: "https://www.nytimes.com/crosswords/game/daily" },
               {weight: 1, url: "https://www.nytimes.com/crosswords/game/daily/2001/09/11" },
-              {weight: 3, url: "https://www.nytimes.com/puzzles/spelling-bee" },
+              {weight: 2, url: "https://www.nytimes.com/puzzles/spelling-bee" },
+              {weight: 1, url: "https://www.nytimes.com/games/wordle/index.html" },
             ] },
           ] },
           // other
-          { weight: 0.5, children: [
+          { weight: 1, children: [
             { weight: 1, url: "https://www.nytimes.com/2025/11/04/us/politics/dick-cheney-dead.html" },
             { weight: 1, url: "https://buybears.org/" },
             { weight: 1, url: "https://catgpt.wvd.io/" },
             { weight: 0.2, url: "https://chatgpt.com/share/6975e5f9-823c-8006-8946-462d96363106" }, // elon child
             { weight: 0.2, url: "https://docs.google.com/spreadsheets/d/1A2AAzbg2b2dDJuH3YkFBsYzQy3eNTvXAimUEbTc2cWc/edit?gid=1028301268#gid=1028301268" }, // movie votes
+            { weight: 0.2, url: "https://trsigg.github.io/pages/squouch" },
           ] },
           // // template
           // { weight: 1, children: [
