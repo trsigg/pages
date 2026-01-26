@@ -7,10 +7,12 @@
     <style>
       :root {
         color-scheme: only dark;
-        --frame-width: min(29vw, 980px);
-        --frame-height: min(15vw, 560px);
-        --frame-x: -4px;
-        --frame-y: -23px;
+        --frame-width: 30%;
+        --frame-height: 16%;
+        --frame-left: 35%;
+        --frame-top: 42%;
+        --frame-x: 0px;
+        --frame-y: 0px;
         --viewport-width: 1920px;
         --viewport-height: 1080px;
         --frame-scale: 0.1;
@@ -32,26 +34,39 @@
       }
       .stage {
         position: relative;
-        width: min(92vw, 1200px);
-        aspect-ratio: 16 / 9;
+        width: 100vw;
+        height: 100vh;
         display: grid;
         place-items: center;
+        overflow: hidden;
       }
       .backdrop {
         position: absolute;
         inset: 0;
-        background: center / contain no-repeat;
+        display: grid;
+        place-items: center;
         filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.65));
+      }
+      .backdrop img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        display: block;
+      }
+      .screen-space {
+        position: absolute;
+        pointer-events: none;
       }
       .frame {
         position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%) translate(var(--frame-x), var(--frame-y));
+        left: calc(var(--frame-left) + var(--frame-x));
+        top: calc(var(--frame-top) + var(--frame-y));
         width: var(--frame-width);
         height: var(--frame-height);
         overflow: hidden;
         background: #090909;
+        pointer-events: auto;
       }
       .viewport {
         width: var(--viewport-width);
@@ -82,10 +97,33 @@
     <script src="../assets/broop-random.js"></script>
     <script>
       (function () {
-        var backdrops = ["../assets/broop-tv-1.png", "../assets/broop-tv-2.png"];
+        var backdrops = [
+          {
+            src: "../assets/broop-tv-1.png",
+            settings: {
+              "--frame-width": "43.7%",
+              "--frame-height": "32%",
+              "--frame-left": "28%",
+              "--frame-top": "21.5%",
+              "--frame-x": "0px",
+              "--frame-y": "0px",
+            },
+          },
+          {
+            src: "../assets/broop-tv-2.png",
+            settings: {
+              "--frame-width": "36.2%",
+              "--frame-height": "29.5%",
+              "--frame-left": "31.3%",
+              "--frame-top": "30%",
+              "--frame-x": "0px",
+              "--frame-y": "0px",
+            },
+          },
+        ];
         var pickedBackdrop =
           backdrops[Math.floor(Math.random() * backdrops.length)];
-        var target = window.BroopRandom.pickUrl(window.BROOP_SITES);
+        var selection = window.BroopRandom.pickTarget(window.BROOP_SITES);
 
         function updateScale() {
           var rootStyle = getComputedStyle(document.documentElement);
@@ -110,13 +148,42 @@
         }
 
         function init() {
-          var backdropEl = document.querySelector(".backdrop");
+          var backdropImg = document.querySelector(".backdrop-image");
+          var stageEl = document.querySelector(".stage");
+          var screenSpace = document.querySelector(".screen-space");
           var frameEl = document.querySelector(".frame");
           var iframe = document.querySelector("iframe");
-          backdropEl.style.backgroundImage = 'url("' + pickedBackdrop + '")';
-          iframe.src = target;
-          updateScale();
-          window.addEventListener("resize", updateScale);
+          backdropImg.src = pickedBackdrop.src;
+          Object.keys(pickedBackdrop.settings).forEach(function (key) {
+            document.documentElement.style.setProperty(
+              key,
+              pickedBackdrop.settings[key]
+            );
+          });
+          function updateScreenSpace() {
+            var stageRect = stageEl.getBoundingClientRect();
+            var imageRect = backdropImg.getBoundingClientRect();
+            screenSpace.style.left = imageRect.left - stageRect.left + "px";
+            screenSpace.style.top = imageRect.top - stageRect.top + "px";
+            screenSpace.style.width = imageRect.width + "px";
+            screenSpace.style.height = imageRect.height + "px";
+            updateScale();
+          }
+          if (backdropImg.complete) {
+            updateScreenSpace();
+          } else {
+            backdropImg.addEventListener("load", updateScreenSpace);
+          }
+          window.addEventListener("resize", updateScreenSpace);
+          var embed = selection.embed || function (url) {
+            return { src: url, attrs: {} };
+          };
+          var embedConfig = embed(selection.url);
+          var attrs = embedConfig.attrs || {};
+          iframe.src = embedConfig.src;
+          Object.keys(attrs).forEach(function (key) {
+            iframe.setAttribute(key, attrs[key]);
+          });
           iframe.addEventListener("load", function () {
             frameEl.classList.add("ready");
           });
@@ -132,11 +199,15 @@
   </head>
   <body>
     <div class="stage">
-      <div class="backdrop" aria-hidden="true"></div>
-      <div class="frame">
-        <div class="loading">Tuning</div>
-        <div class="viewport">
-          <iframe title="Broop Frame" loading="eager"></iframe>
+      <div class="backdrop" aria-hidden="true">
+        <img class="backdrop-image" alt="" />
+      </div>
+      <div class="screen-space">
+        <div class="frame">
+          <div class="loading">Tuning</div>
+          <div class="viewport">
+            <iframe title="Broop Frame" loading="eager"></iframe>
+          </div>
         </div>
       </div>
     </div>

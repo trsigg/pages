@@ -9,7 +9,8 @@
     <script src="../assets/broop-random.js"></script>
     <script>
       (function () {
-        var target = window.BroopRandom.pickUrl(window.BROOP_SITES);
+        var selection = window.BroopRandom.pickTarget(window.BROOP_SITES);
+        var target = selection.url;
         window.location.replace(target);
       })();
     </script>

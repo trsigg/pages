@@ -3,7 +3,7 @@ window.BroopRandom = (function () {
     return typeof node.weight === "number" ? node.weight : 1;
   }
 
-  function pickWeighted(nodes) {
+  function pickWeighted(nodes, inheritedEmbed) {
     var totalWeight = nodes.reduce(function (sum, node) {
       return sum + normalizeWeight(node);
     }, 0);
@@ -16,15 +16,23 @@ window.BroopRandom = (function () {
         break;
       }
     }
-    if (chosen.children && chosen.children.length) {
-      return pickWeighted(chosen.children);
+    return resolveNode(chosen, inheritedEmbed);
+  }
+
+  function resolveNode(node, inheritedEmbed) {
+    var embed = typeof node.embed === "function" ? node.embed : inheritedEmbed;
+    if (node.children && node.children.length) {
+      return pickWeighted(node.children, embed);
     }
-    return chosen.url;
+    return {
+      url: node.url,
+      embed: embed,
+    };
   }
 
   return {
-    pickUrl: function (sites) {
-      return pickWeighted(sites);
+    pickTarget: function (root) {
+      return resolveNode(root, root.embed);
     },
   };
 })();
