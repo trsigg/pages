@@ -139,7 +139,7 @@ window.BROOP_SITES = {
       weight: 1,
       children: [
         { weight: 2, url: "https://www.sporcle.com/games/random.php" },
-        { weight: 1, url: "https://timeguessr.com/" },
+        { weight: 1, url: "https://timeguessr.com/", blocked: true },
         { weight: 1, url: "https://netgames.io/games/onu-werewolf/" },
         { weight: 0.5, url: "https://www.theatlantic.com/games/bracket-city/" },
         { weight: 0.5, url: "https://dles.aukspot.com/" },
@@ -162,10 +162,11 @@ window.BROOP_SITES = {
         { weight: 1, url: "https://www.nytimes.com/2025/11/04/us/politics/dick-cheney-dead.html" },
         { weight: 1, url: "https://buybears.org/" },
         { weight: 1, url: "https://catgpt.wvd.io/" },
-        { weight: 0.2, url: "https://chatgpt.com/share/6975e5f9-823c-8006-8946-462d96363106" }, // elon child
-        { weight: 1, url: "https://grok.com/share/c2hhcmQtNA_fc92734d-89f3-4019-ae7f-83efd7308dc0" }, // altman child
+        { weight: 0.2, url: "https://chatgpt.com/share/6975e5f9-823c-8006-8946-462d96363106", blocked: true }, // elon child
+        { weight: 1, url: "https://grok.com/share/c2hhcmQtNA_fc92734d-89f3-4019-ae7f-83efd7308dc0", blocked: true }, // altman child
         { weight: 0.2, url: "https://docs.google.com/spreadsheets/d/1A2AAzbg2b2dDJuH3YkFBsYzQy3eNTvXAimUEbTc2cWc/edit?gid=1028301268#gid=1028301268" }, // movie votes
-        { weight: 1, url: "https://partiful.com/e/XG5H1zQy2PGelmLwtYr5" }, // sock wrestling
+        { weight: 1, url: "https://partiful.com/e/XG5H1zQy2PGelmLwtYr5", blocked: true }, // sock wrestling event
+        { weight: 1, url: "https://en.wikipedia.org/wiki/Sock_wrestling" }, // sock wrestling reddit
       ],
     },
     { weight: 1, url: "https://trsigg.github.io/pages/squouch" },

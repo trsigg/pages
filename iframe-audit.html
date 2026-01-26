@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Broop Iframe Audit</title>
+    <style>
+      :root {
+        color-scheme: only light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Courier New", Courier, monospace;
+        background: #f7f5f2;
+        color: #151515;
+      }
+      header {
+        padding: 24px 32px;
+        border-bottom: 1px solid #e0dbd6;
+        background: #fefbf6;
+      }
+      header h1 {
+        margin: 0 0 6px;
+        font-size: 20px;
+      }
+      header p {
+        margin: 0;
+        font-size: 13px;
+        color: #5d5752;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 16px;
+        padding: 24px 32px 48px;
+      }
+      .card {
+        border: 1px solid #ded7d1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fffdf9;
+        box-shadow: 0 8px 20px rgba(28, 24, 20, 0.08);
+      }
+      .card header {
+        padding: 12px 14px;
+        border-bottom: 1px solid #eee7e1;
+        background: #faf6f1;
+      }
+      .card header h2 {
+        margin: 0 0 6px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .card header a {
+        color: #2a2a2a;
+        font-size: 12px;
+        word-break: break-all;
+      }
+      .frame {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border: 0;
+        background: #111;
+      }
+      .status {
+        padding: 8px 14px 12px;
+        font-size: 11px;
+        color: #7c766f;
+      }
+    </style>
+    <script src="./docs/assets/broop-sites.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Broop Iframe Audit</h1>
+      <p>Loads each leaf URL with its embed rules to see which allow iframing.</p>
+    </header>
+    <main class="grid" id="grid"></main>
+    <script>
+      (function () {
+        function collectLeaves(node, inheritedEmbed, inheritedBlocked, output) {
+          var embed = typeof node.embed === "function" ? node.embed : inheritedEmbed;
+          var blocked =
+            typeof node.blocked === "boolean" ? node.blocked : inheritedBlocked;
+          if (node.children && node.children.length) {
+            node.children.forEach(function (child) {
+              collectLeaves(child, embed, blocked, output);
+            });
+            return;
+          }
+          if (node.url) {
+            output.push({ url: node.url, embed: embed, blocked: blocked });
+          }
+        }
+
+        function buildCard(entry, index) {
+          var card = document.createElement("div");
+          card.className = "card";
+
+          var head = document.createElement("header");
+          var title = document.createElement("h2");
+          title.textContent = "Entry " + (index + 1);
+          var link = document.createElement("a");
+          link.href = entry.url;
+          link.textContent = entry.url;
+          link.target = "_blank";
+          link.rel = "noreferrer";
+
+          head.appendChild(title);
+          head.appendChild(link);
+
+          var frame = document.createElement("iframe");
+          frame.className = "frame";
+          frame.loading = "lazy";
+          frame.title = "Audit " + (index + 1);
+
+          var embed = entry.embed || function (url) {
+            return { src: url, attrs: {} };
+          };
+          var embedConfig = embed(entry.url);
+          frame.src = embedConfig.src;
+          var attrs = embedConfig.attrs || {};
+          Object.keys(attrs).forEach(function (key) {
+            frame.setAttribute(key, attrs[key]);
+          });
+
+          var status = document.createElement("div");
+          status.className = "status";
+          status.textContent = entry.blocked ? "Marked blocked" : "Loading...";
+          frame.addEventListener("load", function () {
+            status.textContent = entry.blocked ? "Marked blocked" : "Loaded";
+          });
+          frame.addEventListener("error", function () {
+            status.textContent = "Blocked";
+          });
+
+          card.appendChild(head);
+          card.appendChild(frame);
+          card.appendChild(status);
+          return card;
+        }
+
+        var leaves = [];
+        collectLeaves(
+          window.BROOP_SITES,
+          window.BROOP_SITES.embed,
+          false,
+          leaves
+        );
+        var grid = document.getElementById("grid");
+        leaves.forEach(function (entry, index) {
+          grid.appendChild(buildCard(entry, index));
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -92,6 +92,34 @@
       .frame.ready .loading {
         display: none;
       }
+      .blocked-overlay {
+        position: absolute;
+        inset: 0;
+        display: none;
+        place-items: center;
+        text-align: center;
+        background: rgba(6, 6, 8, 0.82);
+        color: #f5f1ed;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 16px;
+        z-index: 2;
+      }
+      .blocked-overlay a {
+        margin-top: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(245, 241, 237, 0.4);
+        color: inherit;
+        text-decoration: none;
+      }
+      .frame.blocked .blocked-overlay {
+        display: grid;
+      }
     </style>
     <script src="../assets/broop-sites.js"></script>
     <script src="../assets/broop-random.js"></script>
@@ -175,15 +203,23 @@
             backdropImg.addEventListener("load", updateScreenSpace);
           }
           window.addEventListener("resize", updateScreenSpace);
-          var embed = selection.embed || function (url) {
-            return { src: url, attrs: {} };
-          };
-          var embedConfig = embed(selection.url);
-          var attrs = embedConfig.attrs || {};
-          iframe.src = embedConfig.src;
-          Object.keys(attrs).forEach(function (key) {
-            iframe.setAttribute(key, attrs[key]);
-          });
+          if (selection.blocked) {
+            frameEl.classList.add("blocked");
+            var blockedLink = document.querySelector(".blocked-link");
+            blockedLink.href = selection.url;
+            iframe.src = "about:blank";
+            iframe.setAttribute("title", "Blocked iframe");
+          } else {
+            var embed = selection.embed || function (url) {
+              return { src: url, attrs: {} };
+            };
+            var embedConfig = embed(selection.url);
+            var attrs = embedConfig.attrs || {};
+            iframe.src = embedConfig.src;
+            Object.keys(attrs).forEach(function (key) {
+              iframe.setAttribute(key, attrs[key]);
+            });
+          }
           iframe.addEventListener("load", function () {
             frameEl.classList.add("ready");
           });
@@ -204,10 +240,14 @@
       </div>
       <div class="screen-space">
         <div class="frame">
-          <div class="loading">Tuning</div>
-          <div class="viewport">
-            <iframe title="Broop Frame" loading="eager"></iframe>
-          </div>
+        <div class="loading">Tuning</div>
+        <div class="blocked-overlay">
+          <div>Blocked iframe</div>
+          <a class="blocked-link" target="_blank" rel="noreferrer">Open in new tab</a>
+        </div>
+        <div class="viewport">
+          <iframe title="Broop Frame" loading="eager"></iframe>
+        </div>
         </div>
       </div>
     </div>
