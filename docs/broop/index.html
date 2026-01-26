@@ -154,25 +154,24 @@
         var selection = window.BroopRandom.pickTarget(window.BROOP_SITES);
 
         function updateScale() {
-          var rootStyle = getComputedStyle(document.documentElement);
-          var viewportWidth = parseFloat(
-            rootStyle.getPropertyValue("--viewport-width")
-          );
-          var viewportHeight = parseFloat(
-            rootStyle.getPropertyValue("--viewport-height")
-          );
-          if (!viewportWidth || !viewportHeight) {
+          var frameEl = document.querySelector(".frame");
+          if (!frameEl) {
             return;
           }
-          var frameEl = document.querySelector(".frame");
-          var scale = Math.min(
-            frameEl.clientWidth / viewportWidth,
-            frameEl.clientHeight / viewportHeight
+          var frameWidth = frameEl.clientWidth;
+          var frameHeight = frameEl.clientHeight;
+          if (!frameWidth || !frameHeight) {
+            return;
+          }
+          document.documentElement.style.setProperty(
+            "--viewport-width",
+            frameWidth.toFixed(2) + "px"
           );
           document.documentElement.style.setProperty(
-            "--frame-scale",
-            scale.toFixed(4)
+            "--viewport-height",
+            frameHeight.toFixed(2) + "px"
           );
+          document.documentElement.style.setProperty("--frame-scale", "1");
         }
 
         function init() {
