@@ -169,7 +169,7 @@ window.BROOP_SITES = {
         { weight: 1, url: "https://en.wikipedia.org/wiki/Sock_wrestling" }, // sock wrestling reddit
       ],
     },
-    { weight: 1, url: "https://trsigg.github.io/pages/squouch" },
+    { weight: 1, url: "https://trsigg.github.io/pages/squouch", squouch: true },
     // // template
     // {
     //   weight: 1,

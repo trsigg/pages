@@ -120,6 +120,21 @@
       .frame.blocked .blocked-overlay {
         display: grid;
       }
+      .squouch-overlay {
+        position: absolute;
+        inset: 0;
+        display: none;
+        place-items: center;
+        font-size: clamp(48px, 12vmin, 180px);
+        background: #090909;
+        z-index: 3;
+        line-height: 1;
+        white-space: nowrap;
+        padding: 12px;
+      }
+      .frame.squouch .squouch-overlay {
+        display: grid;
+      }
     </style>
     <script src="../assets/broop-sites.js"></script>
     <script src="../assets/broop-random.js"></script>
@@ -151,7 +166,10 @@
         ];
         var pickedBackdrop =
           backdrops[Math.floor(Math.random() * backdrops.length)];
-        var selection = window.BroopRandom.pickTarget(window.BROOP_SITES);
+        function pickSelection() {
+          return window.BroopRandom.pickTarget(window.BROOP_SITES);
+        }
+        var selection = pickSelection();
 
         function updateScale() {
           var frameEl = document.querySelector(".frame");
@@ -202,22 +220,38 @@
             backdropImg.addEventListener("load", updateScreenSpace);
           }
           window.addEventListener("resize", updateScreenSpace);
-          if (selection.blocked) {
-            frameEl.classList.add("blocked");
+          function applySelection(nextSelection) {
+            frameEl.classList.remove("blocked", "squouch");
             var blockedLink = document.querySelector(".blocked-link");
-            blockedLink.href = selection.url;
-            iframe.src = "about:blank";
-            iframe.setAttribute("title", "Blocked iframe");
-          } else {
-            var embed = selection.embed || function (url) {
+            if (nextSelection.properties.blocked) {
+              frameEl.classList.add("blocked");
+              blockedLink.href = nextSelection.url;
+              iframe.src = "about:blank";
+              iframe.setAttribute("title", "Blocked iframe");
+              return;
+            }
+            var embed = nextSelection.properties.embed || function (url) {
               return { src: url, attrs: {} };
             };
-            var embedConfig = embed(selection.url);
+            var embedConfig = embed(nextSelection.url);
             var attrs = embedConfig.attrs || {};
             iframe.src = embedConfig.src;
             Object.keys(attrs).forEach(function (key) {
               iframe.setAttribute(key, attrs[key]);
             });
+          }
+
+          if (selection.properties.squouch) {
+            frameEl.classList.add("squouch");
+            iframe.src = "about:blank";
+            iframe.setAttribute("title", "Squouch");
+            setTimeout(function () {
+              frameEl.classList.remove("squouch");
+              selection = pickSelection();
+              applySelection(selection);
+            }, 500);
+          } else {
+            applySelection(selection);
           }
           iframe.addEventListener("load", function () {
             frameEl.classList.add("ready");
@@ -239,7 +273,8 @@
       </div>
       <div class="screen-space">
         <div class="frame">
-        <div class="loading">Tuning</div>
+        <div class="loading">broop OS</div>
+        <div class="squouch-overlay">🟧🛋️</div>
         <div class="blocked-overlay">
           <div>Blocked iframe</div>
           <a class="blocked-link" target="_blank" rel="noreferrer">Open in new tab</a>

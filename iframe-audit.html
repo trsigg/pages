@@ -82,18 +82,29 @@
     <main class="grid" id="grid"></main>
     <script>
       (function () {
-        function collectLeaves(node, inheritedEmbed, inheritedBlocked, output) {
-          var embed = typeof node.embed === "function" ? node.embed : inheritedEmbed;
-          var blocked =
-            typeof node.blocked === "boolean" ? node.blocked : inheritedBlocked;
+        function collectLeaves(node, inheritedProps, output) {
+          var props = {
+            embed: inheritedProps.embed,
+            blocked: inheritedProps.blocked,
+            squouch: inheritedProps.squouch,
+          };
+          if (typeof node.embed === "function") {
+            props.embed = node.embed;
+          }
+          if (typeof node.blocked === "boolean") {
+            props.blocked = node.blocked;
+          }
+          if (typeof node.squouch === "boolean") {
+            props.squouch = node.squouch;
+          }
           if (node.children && node.children.length) {
             node.children.forEach(function (child) {
-              collectLeaves(child, embed, blocked, output);
+              collectLeaves(child, props, output);
             });
             return;
           }
           if (node.url) {
-            output.push({ url: node.url, embed: embed, blocked: blocked });
+            output.push({ url: node.url, properties: props });
           }
         }
 
@@ -118,7 +129,7 @@
           frame.loading = "lazy";
           frame.title = "Audit " + (index + 1);
 
-          var embed = entry.embed || function (url) {
+          var embed = entry.properties.embed || function (url) {
             return { src: url, attrs: {} };
           };
           var embedConfig = embed(entry.url);
@@ -130,9 +141,13 @@
 
           var status = document.createElement("div");
           status.className = "status";
-          status.textContent = entry.blocked ? "Marked blocked" : "Loading...";
+          status.textContent = entry.properties.blocked
+            ? "Marked blocked"
+            : "Loading...";
           frame.addEventListener("load", function () {
-            status.textContent = entry.blocked ? "Marked blocked" : "Loaded";
+            status.textContent = entry.properties.blocked
+              ? "Marked blocked"
+              : "Loaded";
           });
           frame.addEventListener("error", function () {
             status.textContent = "Blocked";
@@ -145,12 +160,11 @@
         }
 
         var leaves = [];
-        collectLeaves(
-          window.BROOP_SITES,
-          window.BROOP_SITES.embed,
-          false,
-          leaves
-        );
+        collectLeaves(window.BROOP_SITES, {
+          embed: window.BROOP_SITES.embed,
+          blocked: false,
+          squouch: false,
+        }, leaves);
         var grid = document.getElementById("grid");
         leaves.forEach(function (entry, index) {
           grid.appendChild(buildCard(entry, index));

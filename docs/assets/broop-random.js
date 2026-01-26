@@ -3,7 +3,7 @@ window.BroopRandom = (function () {
     return typeof node.weight === "number" ? node.weight : 1;
   }
 
-  function pickWeighted(nodes, inheritedEmbed, inheritedBlocked) {
+  function pickWeighted(nodes, inheritedProps) {
     var totalWeight = nodes.reduce(function (sum, node) {
       return sum + normalizeWeight(node);
     }, 0);
@@ -16,26 +16,40 @@ window.BroopRandom = (function () {
         break;
       }
     }
-    return resolveNode(chosen, inheritedEmbed, inheritedBlocked);
+    return resolveNode(chosen, inheritedProps);
   }
 
-  function resolveNode(node, inheritedEmbed, inheritedBlocked) {
-    var embed = typeof node.embed === "function" ? node.embed : inheritedEmbed;
-    var blocked =
-      typeof node.blocked === "boolean" ? node.blocked : inheritedBlocked;
+  function resolveNode(node, inheritedProps) {
+    var props = {
+      embed: inheritedProps.embed,
+      blocked: inheritedProps.blocked,
+      squouch: inheritedProps.squouch,
+    };
+    if (typeof node.embed === "function") {
+      props.embed = node.embed;
+    }
+    if (typeof node.blocked === "boolean") {
+      props.blocked = node.blocked;
+    }
+    if (typeof node.squouch === "boolean") {
+      props.squouch = node.squouch;
+    }
     if (node.children && node.children.length) {
-      return pickWeighted(node.children, embed, blocked);
+      return pickWeighted(node.children, props);
     }
     return {
       url: node.url,
-      embed: embed,
-      blocked: blocked,
+      properties: props,
     };
   }
 
   return {
     pickTarget: function (root) {
-      return resolveNode(root, root.embed, false);
+      return resolveNode(root, {
+        embed: root.embed,
+        blocked: false,
+        squouch: false,
+      });
     },
   };
 })();
