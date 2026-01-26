@@ -9,7 +9,25 @@
     <script src="../assets/broop-random.js"></script>
     <script>
       (function () {
-        var selection = window.BroopRandom.pickTarget(window.BROOP_SITES);
+        function parsePathParam() {
+          var params = new URLSearchParams(window.location.search);
+          var raw = params.get("path");
+          if (!raw) {
+            return [];
+          }
+          return raw
+            .split(",")
+            .map(function (value) {
+              return parseInt(value.trim(), 10);
+            })
+            .filter(function (value) {
+              return Number.isFinite(value);
+            });
+        }
+        var path = parsePathParam();
+        var selection = path.length
+          ? window.BroopRandom.pickTargetWithPath(window.BROOP_SITES, path)
+          : window.BroopRandom.pickTarget(window.BROOP_SITES);
         var target = selection.url;
         window.location.replace(target);
       })();

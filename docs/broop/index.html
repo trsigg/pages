@@ -164,11 +164,44 @@
             },
           },
         ];
-        var pickedBackdrop =
-          backdrops[Math.floor(Math.random() * backdrops.length)];
+        function parsePathParam() {
+          var params = new URLSearchParams(window.location.search);
+          var raw = params.get("path");
+          if (!raw) {
+            return [];
+          }
+          return raw
+            .split(",")
+            .map(function (value) {
+              return parseInt(value.trim(), 10);
+            })
+            .filter(function (value) {
+              return Number.isFinite(value);
+            });
+        }
+
+        function parseBackdropParam() {
+          var params = new URLSearchParams(window.location.search);
+          var raw = params.get("bg");
+          if (!raw) {
+            return -1;
+          }
+          var index = parseInt(raw, 10);
+          return Number.isFinite(index) ? index : -1;
+        }
+
         function pickSelection() {
+          var path = parsePathParam();
+          if (path.length) {
+            return window.BroopRandom.pickTargetWithPath(window.BROOP_SITES, path);
+          }
           return window.BroopRandom.pickTarget(window.BROOP_SITES);
         }
+        var forcedBackdropIndex = parseBackdropParam();
+        var pickedBackdrop =
+          forcedBackdropIndex >= 0 && forcedBackdropIndex < backdrops.length
+            ? backdrops[forcedBackdropIndex]
+            : backdrops[Math.floor(Math.random() * backdrops.length)];
         var selection = pickSelection();
 
         function updateScale() {

@@ -167,6 +167,7 @@ window.BROOP_SITES = {
         { weight: 0.2, url: "https://docs.google.com/spreadsheets/d/1A2AAzbg2b2dDJuH3YkFBsYzQy3eNTvXAimUEbTc2cWc/edit?gid=1028301268#gid=1028301268" }, // movie votes
         { weight: 1, url: "https://partiful.com/e/XG5H1zQy2PGelmLwtYr5", blocked: true }, // sock wrestling event
         { weight: 1, url: "https://en.wikipedia.org/wiki/Sock_wrestling" }, // sock wrestling reddit
+        { weight: 1, url: "https://trsigg.github.io/pages/broop/" }, // oh god recursion
       ],
     },
     { weight: 1, url: "https://trsigg.github.io/pages/squouch", squouch: true },
