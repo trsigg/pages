@@ -31,11 +31,12 @@
         font-family: "Courier New", Courier, monospace;
         display: grid;
         place-items: center;
+        overflow: hidden;
       }
       .stage {
         position: relative;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
         display: grid;
         place-items: center;
         overflow: hidden;
@@ -48,10 +49,6 @@
         filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.65));
       }
       .backdrop img {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: auto;
         display: block;
       }
       .screen-space {
@@ -240,11 +237,25 @@
           });
           function updateScreenSpace() {
             var stageRect = stageEl.getBoundingClientRect();
-            var imageRect = backdropImg.getBoundingClientRect();
-            screenSpace.style.left = imageRect.left - stageRect.left + "px";
-            screenSpace.style.top = imageRect.top - stageRect.top + "px";
-            screenSpace.style.width = imageRect.width + "px";
-            screenSpace.style.height = imageRect.height + "px";
+            var naturalWidth = backdropImg.naturalWidth || stageRect.width;
+            var naturalHeight = backdropImg.naturalHeight || stageRect.height;
+            if (!naturalWidth || !naturalHeight) {
+              return;
+            }
+            var scale = Math.min(
+              stageRect.width / naturalWidth,
+              stageRect.height / naturalHeight
+            );
+            var imageWidth = naturalWidth * scale;
+            var imageHeight = naturalHeight * scale;
+            var offsetX = (stageRect.width - imageWidth) / 2;
+            var offsetY = (stageRect.height - imageHeight) / 2;
+            backdropImg.style.width = imageWidth + "px";
+            backdropImg.style.height = imageHeight + "px";
+            screenSpace.style.left = offsetX + "px";
+            screenSpace.style.top = offsetY + "px";
+            screenSpace.style.width = imageWidth + "px";
+            screenSpace.style.height = imageHeight + "px";
             updateScale();
           }
           if (backdropImg.complete) {
