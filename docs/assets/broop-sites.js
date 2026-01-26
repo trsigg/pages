@@ -133,7 +133,7 @@ window.BROOP_SITES = {
         },
         // other
         {
-          weight: 4,
+          weight: 3,
           children: [
             { weight: 1, url: "https://www.youtube.com/watch?v=UulEsFPhIjY" }, // curious george
             { weight: 1, url: "https://www.youtube.com/watch?v=RrDt9a0q3P0" }, // snurch
@@ -142,8 +142,8 @@ window.BROOP_SITES = {
             { weight: 1, url: "https://www.youtube.com/watch?v=FPEf7Z-M5vc" }, // wha happen
             { weight: 1, url: "https://www.youtube.com/watch?v=Kf4kqybpkdI" }, // redneck harry
             { weight: 1, url: "https://www.youtube.com/watch?v=CORANvT8l9A" }, // bro country
-            { weight: 0.2, url: "https://www.youtube.com/watch?v=VE5JMEu5hZA" }, // rhcp
-            { weight: 0.2, url: "https://www.youtube.com/watch?v=dMapmlUwerw" }, // wow its made
+            { weight: 0.5, url: "https://www.youtube.com/watch?v=VE5JMEu5hZA" }, // rhcp
+            { weight: 0.5, url: "https://www.youtube.com/watch?v=dMapmlUwerw" }, // wow its made
             {
               weight: 1,
               url: "https://www.instagram.com/reel/CxiOk1zO1_6/",
@@ -164,12 +164,12 @@ window.BROOP_SITES = {
         { weight: 0.5, url: "https://dles.aukspot.com/" },
         // nyt
         {
-          weight: 2,
+          weight: 1,
           blocked: true,
           children: [
-            { weight: 3, url: "https://www.nytimes.com/crosswords/game/daily" },
+            { weight: 1, url: "https://www.nytimes.com/crosswords/game/daily" },
             { weight: 1, url: "https://www.nytimes.com/crosswords/game/daily/2001/09/11" },
-            { weight: 2, url: "https://www.nytimes.com/puzzles/spelling-bee" },
+            { weight: 1, url: "https://www.nytimes.com/puzzles/spelling-bee" },
             { weight: 1, url: "https://www.nytimes.com/games/wordle/index.html" },
           ],
         },
@@ -199,7 +199,7 @@ window.BROOP_SITES = {
             { weight: 1, url: "https://en.wikipedia.org/wiki/Sock_wrestling" }, // sock wrestling reddit
           ],
         },
-        { weight: 2, url: "https://trsigg.github.io/pages/broop/" }, // oh god recursion
+        { weight: 2, url: "https://broop.net" }, // oh god recursion
       ],
     },
     { weight: 1, url: "https://trsigg.github.io/pages/squouch", squouch: true },
