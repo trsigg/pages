@@ -165,6 +165,7 @@ window.BROOP_SITES = {
         // nyt
         {
           weight: 2,
+          blocked: true,
           children: [
             { weight: 3, url: "https://www.nytimes.com/crosswords/game/daily" },
             { weight: 1, url: "https://www.nytimes.com/crosswords/game/daily/2001/09/11" },
@@ -178,7 +179,7 @@ window.BROOP_SITES = {
     {
       weight: 1,
       children: [
-        { weight: 1, url: "https://www.nytimes.com/2025/11/04/us/politics/dick-cheney-dead.html" },
+        { weight: 1, url: "https://www.nytimes.com/2025/11/04/us/politics/dick-cheney-dead.html", blocked: true },
         { weight: 1, url: "https://buybears.org/" },
         // chats
         {
