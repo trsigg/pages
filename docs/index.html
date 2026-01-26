@@ -284,6 +284,7 @@
           function applySelection(nextSelection) {
             frameEl.classList.remove("blocked", "squouch");
             var blockedLink = document.querySelector(".blocked-link");
+            console.log("[broop] loading", nextSelection.url);
             if (nextSelection.properties.squouch) {
               frameEl.classList.add("squouch");
               iframe.src = "about:blank";
