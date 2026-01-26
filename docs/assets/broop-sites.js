@@ -108,7 +108,6 @@ window.BROOP_SITES = {
             { weight: 1, url: "https://www.youtube.com/watch?v=o4JqU8-410s&list=PLeZ7q-s7J4p7AxCzjd-H8yRVz9VIIr828" }, // playlist
             { weight: 1, url: "https://www.youtube.com/watch?v=foS1bG8p2K0" }, // rhapsody
             { weight: 1, url: "https://www.youtube.com/watch?v=PPgLTgWa99w" }, // waafrica
-            { weight: 1, url: "" }, // 
           ],
         },
         // dracula flow
@@ -199,7 +198,7 @@ window.BROOP_SITES = {
             { weight: 1, url: "https://en.wikipedia.org/wiki/Sock_wrestling" }, // sock wrestling reddit
           ],
         },
-        { weight: 1, url: "https://trsigg.github.io/pages/broop/" }, // oh god recursion
+        { weight: 2, url: "https://trsigg.github.io/pages/broop/" }, // oh god recursion
       ],
     },
     { weight: 1, url: "https://trsigg.github.io/pages/squouch", squouch: true },
