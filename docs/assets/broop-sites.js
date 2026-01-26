@@ -42,6 +42,21 @@ window.BroopProviders = (function () {
   return {
     generic: genericEmbed,
     youtube: youtubeEmbed,
+    instagram: function (url) {
+      var parsed = new URL(url);
+      var pathParts = parsed.pathname.split("/").filter(Boolean);
+      var type = pathParts[0] || "reel";
+      var id = pathParts[1] || "";
+      var embedUrl =
+        "https://www.instagram.com/" + type + "/" + id + "/embed/";
+      return {
+        src: embedUrl,
+        attrs: {
+          allowfullscreen: "true",
+          referrerpolicy: "strict-origin-when-cross-origin",
+        },
+      };
+    },
   };
 })();
 
@@ -119,7 +134,7 @@ window.BROOP_SITES = {
         },
         // other
         {
-          weight: 1,
+          weight: 4,
           children: [
             { weight: 1, url: "https://www.youtube.com/watch?v=UulEsFPhIjY" }, // curious george
             { weight: 1, url: "https://www.youtube.com/watch?v=RrDt9a0q3P0" }, // snurch
@@ -130,6 +145,11 @@ window.BROOP_SITES = {
             { weight: 1, url: "https://www.youtube.com/watch?v=CORANvT8l9A" }, // bro country
             { weight: 0.2, url: "https://www.youtube.com/watch?v=VE5JMEu5hZA" }, // rhcp
             { weight: 0.2, url: "https://www.youtube.com/watch?v=dMapmlUwerw" }, // wow its made
+            {
+              weight: 1,
+              url: "https://www.instagram.com/reel/CxiOk1zO1_6/",
+              embed: window.BroopProviders.instagram,
+            }, // food and drink
           ],
         },
       ],
