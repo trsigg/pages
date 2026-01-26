@@ -55,6 +55,19 @@
         position: absolute;
         pointer-events: none;
       }
+      .tap-reload {
+        position: absolute;
+        left: 66.666%;
+        top: 66.666%;
+        width: 33.334%;
+        height: 33.334%;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        cursor: pointer;
+        pointer-events: auto;
+      }
       .frame {
         position: absolute;
         left: calc(var(--frame-left) + var(--frame-x));
@@ -228,12 +241,16 @@
           var screenSpace = document.querySelector(".screen-space");
           var frameEl = document.querySelector(".frame");
           var iframe = document.querySelector("iframe");
+          var reloadButton = document.querySelector(".tap-reload");
           backdropImg.src = pickedBackdrop.src;
           Object.keys(pickedBackdrop.settings).forEach(function (key) {
             document.documentElement.style.setProperty(
               key,
               pickedBackdrop.settings[key]
             );
+          });
+          reloadButton.addEventListener("click", function () {
+            window.location.reload();
           });
           function updateScreenSpace() {
             var stageRect = stageEl.getBoundingClientRect();
@@ -315,6 +332,7 @@
         <img class="backdrop-image" alt="" />
       </div>
       <div class="screen-space">
+        <button class="tap-reload" aria-label="Reload broop"></button>
         <div class="frame">
         <div class="loading">broop OS</div>
         <div class="squouch-overlay">🟧🛋️</div>
