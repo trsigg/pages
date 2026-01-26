@@ -256,6 +256,16 @@
           function applySelection(nextSelection) {
             frameEl.classList.remove("blocked", "squouch");
             var blockedLink = document.querySelector(".blocked-link");
+            if (nextSelection.properties.squouch) {
+              frameEl.classList.add("squouch");
+              iframe.src = "about:blank";
+              iframe.setAttribute("title", "Squouch");
+              setTimeout(function () {
+                frameEl.classList.remove("squouch");
+                applySelection(pickSelection());
+              }, 500);
+              return;
+            }
             if (nextSelection.properties.blocked) {
               frameEl.classList.add("blocked");
               blockedLink.href = nextSelection.url;
@@ -274,18 +284,7 @@
             });
           }
 
-          if (selection.properties.squouch) {
-            frameEl.classList.add("squouch");
-            iframe.src = "about:blank";
-            iframe.setAttribute("title", "Squouch");
-            setTimeout(function () {
-              frameEl.classList.remove("squouch");
-              selection = pickSelection();
-              applySelection(selection);
-            }, 500);
-          } else {
-            applySelection(selection);
-          }
+          applySelection(selection);
           iframe.addEventListener("load", function () {
             frameEl.classList.add("ready");
           });
