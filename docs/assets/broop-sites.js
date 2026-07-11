@@ -142,6 +142,7 @@ window.BROOP_SITES = {
             { weight: 1, url: "https://www.youtube.com/watch?v=FPEf7Z-M5vc" }, // wha happen
             { weight: 1, url: "https://www.youtube.com/watch?v=Kf4kqybpkdI" }, // redneck harry
             { weight: 1, url: "https://www.youtube.com/watch?v=CORANvT8l9A" }, // bro country
+            { weight: 1, url: "https://www.youtube.com/watch?v=15nNY7uofNw" }, // luigi board
             { weight: 0.5, url: "https://www.youtube.com/watch?v=VE5JMEu5hZA" }, // rhcp
             { weight: 0.5, url: "https://www.youtube.com/watch?v=dMapmlUwerw" }, // wow its made
             {
@@ -190,7 +191,6 @@ window.BROOP_SITES = {
             { weight: 1, url: "https://grok.com/share/c2hhcmQtNA_fc92734d-89f3-4019-ae7f-83efd7308dc0", blocked: true }, // altman child
           ],
         },
-        { weight: 1, url: "https://docs.google.com/spreadsheets/d/1A2AAzbg2b2dDJuH3YkFBsYzQy3eNTvXAimUEbTc2cWc/edit?gid=1028301268#gid=1028301268" }, // movie votes
         // sock wrestling
         {
           weight: 1,
